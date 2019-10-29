@@ -3,14 +3,16 @@ using System.Reflection;
 
 namespace Microsoft.Dexterity.Bridge.Extended
 {
-    internal sealed class EventDescription
+    public sealed class EventDescription
     {
         public bool Registered { get; private set; }
 
         public short TagId { get; private set; }
 
+        private readonly DictionaryRootExtended dictionary;
+
         private readonly FieldBase field;
-        public readonly EventInfo eventInfo;
+        private readonly EventInfo eventInfo;
         private readonly EventHandler handler;
 
         private event EventHandler baseEvent;
@@ -21,6 +23,8 @@ namespace Microsoft.Dexterity.Bridge.Extended
         {
             this.eventInfo = eventInfo ?? throw new ArgumentNullException(nameof(eventInfo));
             this.field = field ?? throw new ArgumentNullException(nameof(field));
+
+            dictionary = field.Dictionary.Extended();
 
             handler = HandleEvent;
         }
@@ -35,6 +39,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
             try
             {
                 eventInfo.AddEventHandler(field, handler);
+                TagId = dictionary.LastRegisteredEvent();
                 Registered = true;
             }
             catch { }

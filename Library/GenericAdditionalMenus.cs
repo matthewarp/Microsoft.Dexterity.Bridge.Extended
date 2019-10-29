@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Microsoft.Dexterity.Bridge.Extended
 {
@@ -7,6 +8,8 @@ namespace Microsoft.Dexterity.Bridge.Extended
     public static class GenericAdditionalMenus
     {
         public static event GenericAdditionalMenuHandler GenericAdditionalMenuClicked;
+
+        private static Dictionary<Guid, short> tags = new Dictionary<Guid, short>();
 
         public static Guid Add(short productId, string formName, string menuText, string acceleratorKey)
         {

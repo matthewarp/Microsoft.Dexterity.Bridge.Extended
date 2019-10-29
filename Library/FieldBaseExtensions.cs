@@ -4,13 +4,13 @@ namespace Microsoft.Dexterity.Bridge.Extended
 {
     public static class FieldBaseExtensions
     {
-        private static Dictionary<string, FieldBaseWithEvents> _eventsCache = new Dictionary<string, FieldBaseWithEvents>();
+        private static Dictionary<string, FieldBaseExtended> _eventsCache = new Dictionary<string, FieldBaseExtended>();
 
-        public static FieldBaseWithEvents Extended(this FieldBase field)
+        public static FieldBaseExtended Extended(this FieldBase field)
         {
             string key = field.Key();
             if (!_eventsCache.ContainsKey(key))
-                _eventsCache[key] = new FieldBaseWithEvents(field);
+                _eventsCache[key] = new FieldBaseExtended(field);
 
             return _eventsCache[key];
         }
@@ -21,16 +21,16 @@ namespace Microsoft.Dexterity.Bridge.Extended
 
         public static string ValueToString(this FieldBase field) => LocateForValue(field).Value?.ToString();
 
-        internal static FieldBaseWithEvents LocateForValue(FieldBase field)
+        internal static FieldBaseExtended LocateForValue(FieldBase field)
         {
             string key = field.Key();
 
             if (_eventsCache.ContainsKey(key))
                 return _eventsCache[key];
 
-            return new FieldBaseWithEvents(field, false);
+            return new FieldBaseExtended(field, false);
         }
 
-        internal static string Key(this FieldBase field) => $"{field.FullName} in {field.Dictionary.ProductId}";
+        public static string Key(this FieldBase field) => $"{field.FullName} in {field.Dictionary.ProductId}";
     }
 }
