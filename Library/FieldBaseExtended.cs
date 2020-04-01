@@ -19,7 +19,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
         public event EventHandler ValidateAfterOriginal { add => EventDescriptions.ValidateAfterOriginal?.Subscribe(value); remove => EventDescriptions.ValidateAfterOriginal?.Unsubscribe(value); }
         public event CancelEventHandler ValidateBeforeOriginal { add => EventDescriptions.ValidateBeforeOriginal?.Subscribe(value); remove => EventDescriptions.ValidateBeforeOriginal?.Unsubscribe(value); }
 
-        public readonly bool CanGetValue, CanSetValue;
+        public readonly bool CanGetValue, CanSetValue, CanRunValidate, CanShow, CanHide, CanLock, CanUnlock, CanEnable, CanDisable;
 
         public EventDescriptions EventDescriptions { get; }
 
@@ -28,6 +28,8 @@ namespace Microsoft.Dexterity.Bridge.Extended
         private readonly Func<object> getValue;
         private readonly Action<object> setValue;
 
+        private readonly Action doRunValidate, doShow, doHide, doLock, doUnlock, doEnable, doDisable;
+
 
         internal FieldBaseExtended(FieldBase field, bool enableEvents = true)
         {
@@ -35,6 +37,14 @@ namespace Microsoft.Dexterity.Bridge.Extended
 
             CanGetValue = (getValue = TryRegisterGetProperty(nameof(Value))) != null;
             CanSetValue = (setValue = TryRegisterSetProperty(nameof(Value))) != null;
+
+            CanRunValidate = (doRunValidate = TryMethod("RunValidate")) != null;
+            CanShow = (doShow = TryMethod("Show")) != null;
+            CanHide = (doHide = TryMethod("Hide")) != null;
+            CanLock = (doLock = TryMethod("Lock")) != null;
+            CanUnlock = (doUnlock = TryMethod("Unlock")) != null;
+            CanEnable = (doEnable = TryMethod("Enable")) != null;
+            CanDisable = (doDisable = TryMethod("Disable")) != null;
 
             EventDescriptions = EventDescriptions.Empty;
 
@@ -53,6 +63,10 @@ namespace Microsoft.Dexterity.Bridge.Extended
                     CancelEventDescription.Create(TryLocateEvent(nameof(ValidateBeforeOriginal)), field)
                 );
         }
+
+        public FieldBase Field() => field;
+
+        public T Field<T>() where T : FieldBase => (T)field;
 
         public bool TryGetValue(out object value)
         {
@@ -87,6 +101,33 @@ namespace Microsoft.Dexterity.Bridge.Extended
             try
             {
                 setValue(value);
+                return TryAction(doRunValidate);
+            }
+            catch { return false; }
+        }
+
+        public bool TryRunValidate() => TryAction(doRunValidate);
+
+        public bool TryShow() => TryAction(doShow);
+
+        public bool TryHide() => TryAction(doHide);
+
+        public bool TryLock() => TryAction(doLock);
+
+        public bool TryUnlock() => TryAction(doUnlock);
+
+        public bool TryEnable() => TryAction(doEnable);
+
+        public bool TryDisable() => TryAction(doDisable);
+
+        private bool TryAction(Action action)
+        {
+            if (action is null)
+                return false;
+
+            try
+            {
+                action.Invoke();
                 return true;
             }
             catch { return false; }
@@ -95,6 +136,19 @@ namespace Microsoft.Dexterity.Bridge.Extended
         public static implicit operator FieldBase(FieldBaseExtended obj)
         {
             return obj.field;
+        }
+
+        private Action TryMethod(string method)
+        {
+            try
+            {
+                var meth = field.GetType().GetMethod(method);
+                if (meth != null)
+                    return (Action)meth.CreateDelegate(typeof(Action), field);
+            }
+            catch { }
+
+            return null;
         }
 
         private Func<object> TryRegisterGetProperty(string property)

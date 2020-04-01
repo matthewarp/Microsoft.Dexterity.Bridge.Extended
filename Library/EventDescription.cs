@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace Microsoft.Dexterity.Bridge.Extended
 {
-    public sealed class EventDescription
+    public sealed class EventDescription : IEventDescription<EventHandler>
     {
         public bool Registered { get; private set; }
 
@@ -57,6 +57,12 @@ namespace Microsoft.Dexterity.Bridge.Extended
         public void Unsubscribe(EventHandler subscriber)
         {
             baseEvent -= subscriber;
+        }
+
+        public void UnsubscribeAll()
+        {
+            foreach (Delegate d in baseEvent.GetInvocationList())
+                baseEvent -= (EventHandler)d;
         }
 
         private void HandleEvent(object sender, EventArgs e) => baseEvent?.Invoke(sender, e);

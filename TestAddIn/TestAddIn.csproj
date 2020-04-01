@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CF253349-A2A5-481A-9378-ADDCEE266ADE}</ProjectGuid>
+    <ProjectGuid>{A2FF57A0-4A54-453E-918F-63B51B45935F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Microsoft.Dexterity.Bridge.Extended</RootNamespace>
-    <AssemblyName>Microsoft.Dexterity.Bridge.Extended</AssemblyName>
+    <RootNamespace>TestAddIn</RootNamespace>
+    <AssemblyName>TestAddIn</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -21,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,19 +29,19 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Microsoft.Dexterity.Bridge.Extended.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Application.Dynamics, Version=18.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft Dynamics\GP2018\Application.Dynamics.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Dexterity.Bridge, Version=18.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft Dynamics\GP2018\Microsoft.Dexterity.Bridge.dll</HintPath>
-      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Dexterity.Shell, Version=18.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft Dynamics\GP2018\Microsoft.Dexterity.Shell.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -54,27 +53,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CancelEventDescription.cs" />
-    <Compile Include="DictionaryFormExtensions.cs" />
-    <Compile Include="DictionaryRootExtended.cs" />
-    <Compile Include="DictionaryRootExtensions.cs" />
-    <Compile Include="DictionaryRoots.cs" />
-    <Compile Include="EventDescription.cs" />
-    <Compile Include="EventDescriptions.cs" />
-    <Compile Include="FieldBaseExtensions.cs" />
-    <Compile Include="FieldBaseExtended.cs" />
-    <Compile Include="GenericAdditionalMenus.cs" />
-    <Compile Include="IEventDescription.cs" />
-    <Compile Include="IEventDescription`T.cs" />
+    <Compile Include="GPAddIn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Library.nuspec" />
-    <None Include="Microsoft.Dexterity.Bridge.Extended.pfx" />
+    <ProjectReference Include="..\Library\Library.csproj">
+      <Project>{cf253349-a2a5-481a-9378-addcee266ade}</Project>
+      <Name>Library</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>signtool.exe $(TargetPath)
-xcopy /Y $(TargetPath) "C:\Program Files (x86)\Microsoft Dynamics\GP2018\AddIns"</PostBuildEvent>
+    <PostBuildEvent>xcopy /Y $(TargetPath) "C:\Program Files (x86)\Microsoft Dynamics\GP2018\AddIns"</PostBuildEvent>
   </PropertyGroup>
 </Project>

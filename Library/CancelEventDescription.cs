@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Microsoft.Dexterity.Bridge.Extended
 {
-    public sealed class CancelEventDescription
+    public sealed class CancelEventDescription : IEventDescription<CancelEventHandler>
     {
         public bool Registered { get; private set; }
 
@@ -58,6 +58,12 @@ namespace Microsoft.Dexterity.Bridge.Extended
         public void Unsubscribe(CancelEventHandler subscriber)
         {
             baseEvent -= subscriber;
+        }
+
+        public void UnsubscribeAll()
+        {
+            foreach (Delegate d in baseEvent.GetInvocationList())
+                baseEvent -= (CancelEventHandler)d;
         }
 
         private void HandleEvent(object sender, CancelEventArgs e) => baseEvent?.Invoke(sender, e);
