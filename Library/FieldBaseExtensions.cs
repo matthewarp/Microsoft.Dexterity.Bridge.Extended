@@ -15,21 +15,21 @@ namespace Microsoft.Dexterity.Bridge.Extended
             return _eventsCache[key];
         }
 
-        public static object Value(this FieldBase field) => LocateForValue(field).Value;
+        //public static object Value(this FieldBase field) => LocateForValue(field).Value;
 
-        public static T Value<T>(this FieldBase field) => (T)LocateForValue(field).Value;
+        //public static T Value<T>(this FieldBase field) => (T)LocateForValue(field).Value;
 
-        public static string ValueToString(this FieldBase field) => LocateForValue(field).Value?.ToString();
+        //public static string ValueToString(this FieldBase field) => LocateForValue(field).Value?.ToString();
 
-        internal static FieldBaseExtended LocateForValue(FieldBase field)
-        {
-            string key = field.Key();
+        //internal static FieldBaseExtended LocateForValue(FieldBase field)
+        //{
+        //    string key = field.Key();
 
-            if (_eventsCache.ContainsKey(key))
-                return _eventsCache[key];
+        //    if (_eventsCache.ContainsKey(key))
+        //        return _eventsCache[key];
 
-            return new FieldBaseExtended(field, false);
-        }
+        //    return new FieldBaseExtended(field, false);
+        //}
 
         public static string Key(this FieldBase field) => $"{field.FullName} in {field.Dictionary.ProductId}";
     }

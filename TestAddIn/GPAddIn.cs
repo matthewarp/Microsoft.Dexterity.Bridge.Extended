@@ -20,7 +20,6 @@ namespace TestAddIn
 
         private void Field_Change(object sender, EventArgs e)
         {
-
             WARN("Hello There - " + sender.GetType());
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace Microsoft.Dexterity.Bridge.Extended
 {
@@ -19,21 +20,21 @@ namespace Microsoft.Dexterity.Bridge.Extended
         public event EventHandler ValidateAfterOriginal { add => EventDescriptions.ValidateAfterOriginal?.Subscribe(value); remove => EventDescriptions.ValidateAfterOriginal?.Unsubscribe(value); }
         public event CancelEventHandler ValidateBeforeOriginal { add => EventDescriptions.ValidateBeforeOriginal?.Subscribe(value); remove => EventDescriptions.ValidateBeforeOriginal?.Unsubscribe(value); }
 
-        public readonly bool CanGetValue, CanSetValue, CanRunValidate, CanShow, CanHide, CanLock, CanUnlock, CanEnable, CanDisable;
+        public readonly bool CanGetValue, CanSetValue, CanRunValidate, CanShow, CanHide, CanLock, CanUnlock, CanEnable, CanDisable, CanFocus;
+
+        public FieldBase Field { get; }
 
         public EventDescriptions EventDescriptions { get; }
-
-        private readonly FieldBase field;
 
         private readonly Func<object> getValue;
         private readonly Action<object> setValue;
 
-        private readonly Action doRunValidate, doShow, doHide, doLock, doUnlock, doEnable, doDisable;
+        private readonly Action doRunValidate, doShow, doHide, doLock, doUnlock, doEnable, doDisable, doFocus;
 
 
         internal FieldBaseExtended(FieldBase field, bool enableEvents = true)
         {
-            this.field = field;
+            Field = field;
 
             CanGetValue = (getValue = TryRegisterGetProperty(nameof(Value))) != null;
             CanSetValue = (setValue = TryRegisterSetProperty(nameof(Value))) != null;
@@ -45,6 +46,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
             CanUnlock = (doUnlock = TryMethod("Unlock")) != null;
             CanEnable = (doEnable = TryMethod("Enable")) != null;
             CanDisable = (doDisable = TryMethod("Disable")) != null;
+            CanFocus = (doFocus = TryMethod("Focus")) != null;
 
             EventDescriptions = EventDescriptions.Empty;
 
@@ -64,87 +66,90 @@ namespace Microsoft.Dexterity.Bridge.Extended
                 );
         }
 
-        public FieldBase Field() => field;
-
-        public T Field<T>() where T : FieldBase => (T)field;
-
-        public bool TryGetValue(out object value)
+        public bool TryGetValue(out object value, out Result results)
         {
             value = null;
             if (getValue is null)
-                return false;
+                return (results = new Result("Field does not have a property named Value with a getter"));
 
-            value = getValue();
-            return true;
+            try
+            {
+                value = getValue();
+                return (results = Result.SUCCESS);
+            }
+            catch(Exception ex) { return (results = new Result(ex.Message)); }
         }
 
-        public bool TryGetValue<T>(out T value)
+        public bool TryGetValue<T>(out T value, out Result results)
         {
             value = default;
             if (getValue is null)
-                return false;
+                return (results = new Result("Field does not have a property named Value with a getter"));
 
-            object temp = getValue();
+            try
+            {
+                object temp = getValue();
 
-            if (!(temp is T))
-                return false;
+                if (!(temp is T))
+                    return (results = new Result($"Requested a value of type {typeof(T)} from the Field, received {temp?.GetType()} instead"));
 
-            value = (T)temp;
-            return true;
+                value = (T)temp;
+                return (results = Result.SUCCESS);
+            }
+            catch(Exception ex) { return (results = new Result(ex.Message)); }
         }
 
-        public bool TrySetValue(object value)
+        public bool TrySetValue(object value, out Result results)
         {
             if (setValue is null)
-                return false;
+                return (results = new Result("Field does not have a propert named Value with a setter"));
 
             try
             {
                 setValue(value);
-                return TryAction(doRunValidate);
+                return TryAction(doRunValidate, out results);
             }
-            catch { return false; }
+            catch(Exception ex) { return (results = new Result(ex.Message)); }
         }
 
-        public bool TryRunValidate() => TryAction(doRunValidate);
+        public bool TryRunValidate(out Result results) => TryAction(doRunValidate, out results);
 
-        public bool TryShow() => TryAction(doShow);
+        public bool TryShow(out Result results) => TryAction(doShow, out results);
 
-        public bool TryHide() => TryAction(doHide);
+        public bool TryHide(out Result results) => TryAction(doHide, out results);
 
-        public bool TryLock() => TryAction(doLock);
+        public bool TryLock(out Result results) => TryAction(doLock, out results);
 
-        public bool TryUnlock() => TryAction(doUnlock);
+        public bool TryUnlock(out Result results) => TryAction(doUnlock, out results);
 
-        public bool TryEnable() => TryAction(doEnable);
+        public bool TryEnable(out Result results) => TryAction(doEnable, out results);
 
-        public bool TryDisable() => TryAction(doDisable);
+        public bool TryDisable(out Result results) => TryAction(doDisable, out results);
 
-        private bool TryAction(Action action)
+        public bool TryFocus(out Result results) => TryAction(doFocus, out results);
+
+        public static implicit operator FieldBase(FieldBaseExtended obj) => obj.Field;
+
+        private bool TryAction(Action action, out Result results, [CallerMemberName]string callerMember = default)
         {
             if (action is null)
-                return false;
+                return (results = new Result($"Field does have a {callerMember} method"));
 
             try
             {
                 action.Invoke();
-                return true;
+                return (results = Result.SUCCESS);
             }
-            catch { return false; }
-        }
-
-        public static implicit operator FieldBase(FieldBaseExtended obj)
-        {
-            return obj.field;
+            catch (Exception ex) { return (results = new Result(ex.Message)); }
         }
 
         private Action TryMethod(string method)
         {
             try
             {
-                var meth = field.GetType().GetMethod(method);
+                var meth = Field.GetType().GetMethod(method);
                 if (meth != null)
-                    return (Action)meth.CreateDelegate(typeof(Action), field);
+                    return (Action)meth.CreateDelegate(typeof(Action), Field);
             }
             catch { }
 
@@ -155,9 +160,9 @@ namespace Microsoft.Dexterity.Bridge.Extended
         {
             try
             {
-                var prop = field.GetType().GetProperty(property);
+                var prop = Field.GetType().GetProperty(property);
                 if (prop != null)
-                    return new Func<object>(() => prop.GetValue(field));
+                    return new Func<object>(() => prop.GetValue(Field));
             }
             catch { }
 
@@ -168,9 +173,9 @@ namespace Microsoft.Dexterity.Bridge.Extended
         {
             try
             {
-                var prop = field.GetType().GetProperty(property);
+                var prop = Field.GetType().GetProperty(property);
                 if (prop != null)
-                    return new Action<object>(val => prop.SetValue(field, val));
+                    return new Action<object>(val => prop.SetValue(Field, val));
             }
             catch { }
 
@@ -181,7 +186,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
         {
             try
             {
-                return field.GetType().GetEvent(eventName);
+                return Field.GetType().GetEvent(eventName);
             }
             catch { return null; }
         }

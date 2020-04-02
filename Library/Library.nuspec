@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>DynamicsGP.Microsoft.Dexterity.Bridge.Extended</id>
-    <version>18.0.0.30197</version>
+    <version>18.0.1.1</version>
     <title>$title$</title>
     <authors>Matthew Arp</authors>
     <owners>Matthew Arp</owners>
@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>The Microsoft.Dexterity.Bridge.Extended Package provides extended functionality of the Microsoft.Dexterity.Bridge library used in Microsoft Dynamics GP .NET AddIn development.</description>
     <releaseNotes>Initial Version</releaseNotes>
-    <copyright>Copyright 2019</copyright>
+    <copyright>Copyright 2020</copyright>
     <tags>DynamicsGP Dexterity</tags>
     <repository type="git" url="https://github.com/matthewarp/Microsoft.Dexterity.Bridge.Extended" />
     <dependencies>
