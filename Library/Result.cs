@@ -8,7 +8,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
 {
     public class Result
     {
-        public static readonly Result SUCCESS = new Result();
+        public static readonly Result SUCCESS = new Result(string.Empty, true);
         public static readonly Result FAIL = new Result(string.Empty, false);
 
         public string Message { get; }
