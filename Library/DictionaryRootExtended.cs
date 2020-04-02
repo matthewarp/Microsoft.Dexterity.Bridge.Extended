@@ -47,24 +47,24 @@ namespace Microsoft.Dexterity.Bridge.Extended
         {
             ParameterHandler handler = new ParameterHandler();
             setParamHandler(handler);
-            ExecuteSanscript("local integer l_tag;system 5156, l_tag;OLE_SetProperty(\"Result\", str(l_tag));");
+            ExecuteSanscript("local integer l_tag;system 5156, l_tag;OLE_SetProperty(\"Result\", str(l_tag));", out _);
 
             return short.Parse(handler.Result);
         }
 
-        public void SetParamHandler(ParameterHandler handler)
+        public void SetParamHandler(object handler)
         {
             setParamHandler(handler);
         }
 
-        public unsafe short ExecuteSanscript(string codeString)
+        public unsafe short ExecuteSanscript(string codeString, out string compilerErrorMessage)
         {
-            string compileErrorMessage = string.Empty;
+            compilerErrorMessage = string.Empty;
             char* pointer = (char*)Marshal.StringToBSTR(codeString).ToPointer();
             char* chPtr;
             short num = Dispatch.ExecuteSanscript(pointer, &chPtr);
             IntPtr ptr = (IntPtr)((void*)chPtr);
-            compileErrorMessage = Marshal.PtrToStringBSTR(ptr);
+            compilerErrorMessage = Marshal.PtrToStringBSTR(ptr);
             Marshal.FreeBSTR((IntPtr)((void*)pointer));
             Marshal.FreeBSTR((IntPtr)((void*)chPtr));
             return num;
