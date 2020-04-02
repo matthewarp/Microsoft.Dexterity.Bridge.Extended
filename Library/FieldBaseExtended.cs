@@ -99,15 +99,19 @@ namespace Microsoft.Dexterity.Bridge.Extended
             catch(Exception ex) { return (results = new Result(ex.Message)); }
         }
 
-        public bool TrySetValue(object value, out Result results)
+        public bool TrySetValue(object value, bool runValidate, out Result results)
         {
             if (setValue is null)
-                return (results = new Result("Field does not have a propert named Value with a setter"));
+                return (results = new Result("Field does not have a property named Value with a setter"));
 
             try
             {
                 setValue(value);
-                return TryAction(doRunValidate, out results);
+
+                if (runValidate)
+                    return TryAction(doRunValidate, out results);
+                else
+                    return (results = Result.SUCCESS);
             }
             catch(Exception ex) { return (results = new Result(ex.Message)); }
         }

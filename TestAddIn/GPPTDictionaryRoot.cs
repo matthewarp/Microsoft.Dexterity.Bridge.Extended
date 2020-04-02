@@ -140,16 +140,16 @@ namespace TestAddIn
         #endregion
 
         #region Setters
-        public static short SetWindowValueModifiedBoolean(short nProdID, string sFormName, string sWinName, string sFieldName, bool fieldValue, out string results)
-            => SetWindowValueModified(nProdID, sFormName, sWinName, sFieldName, fieldValue, out results);
+        public static short SetWindowValueModifiedBoolean(short nProdID, string sFormName, string sWinName, string sFieldName, bool fieldValue, bool runValidate, out string results)
+            => SetWindowValueModified(nProdID, sFormName, sWinName, sFieldName, fieldValue, runValidate, out results);
 
-        public static short SetWindowValueModifiedDate(short nProdID, string sFormName, string sWinName, string sFieldName, DateTime fieldValue, out string results)
-            => SetWindowValueModifiedDateTime(nProdID, sFormName, sWinName, sFieldName, fieldValue.Date, out results);
+        public static short SetWindowValueModifiedDate(short nProdID, string sFormName, string sWinName, string sFieldName, DateTime fieldValue, bool runValidate, out string results)
+            => SetWindowValueModifiedDateTime(nProdID, sFormName, sWinName, sFieldName, fieldValue.Date, runValidate, out results);
 
-        private static short SetWindowValueModifiedDateTime(short nProdID, string sFormName, string sWinName, string sFieldName, DateTime fieldValue, out string results)
-            => SetWindowValueModified(nProdID, sFormName, sWinName, sFieldName, fieldValue, out results);
+        private static short SetWindowValueModifiedDateTime(short nProdID, string sFormName, string sWinName, string sFieldName, DateTime fieldValue, bool runValidate, out string results)
+            => SetWindowValueModified(nProdID, sFormName, sWinName, sFieldName, fieldValue, runValidate, out results);
 
-        public static short SetWindowValueModifiedNumeric(short nProdID, string sFormName, string sWinName, string sFieldName, decimal fieldValue, out string results)
+        public static short SetWindowValueModifiedNumeric(short nProdID, string sFormName, string sWinName, string sFieldName, decimal fieldValue, bool runValidate, out string results)
         {
             short nStatus = 0;
             results = string.Empty;
@@ -159,11 +159,11 @@ namespace TestAddIn
                 object value = new DictionaryRoot(nProdID, true).Forms[sFormName].Windows[sWinName].Fields[sFieldName].Extended().Value;
 
                 if (value is short)
-                    nStatus = SetWindowValueModified(nProdID, sFormName, sWinName, sFieldName, (short)fieldValue, out results);
+                    nStatus = SetWindowValueModified(nProdID, sFormName, sWinName, sFieldName, (short)fieldValue, runValidate, out results);
                 else if (value is int)
-                    nStatus = SetWindowValueModified(nProdID, sFormName, sWinName, sFieldName, (int)fieldValue, out results);
+                    nStatus = SetWindowValueModified(nProdID, sFormName, sWinName, sFieldName, (int)fieldValue, runValidate, out results);
                 else
-                    nStatus = SetWindowValueModified(nProdID, sFormName, sWinName, sFieldName, fieldValue, out results);
+                    nStatus = SetWindowValueModified(nProdID, sFormName, sWinName, sFieldName, fieldValue, runValidate, out results);
             }
             catch(Exception ex)
             {
@@ -174,13 +174,13 @@ namespace TestAddIn
             return nStatus;
         }
 
-        public static short SetWindowValueModifiedString(short nProdID, string sFormName, string sWinName, string sFieldName, string fieldValue, out string results)
-            => SetWindowValueModified(nProdID, sFormName, sWinName, sFieldName, fieldValue, out results);
+        public static short SetWindowValueModifiedString(short nProdID, string sFormName, string sWinName, string sFieldName, string fieldValue, bool runValidate, out string results)
+            => SetWindowValueModified(nProdID, sFormName, sWinName, sFieldName, fieldValue, runValidate, out results);
 
-        public static short SetWindowValueModifiedTime(short nProdID, string sFormName, string sWinName, string sFieldName, DateTime fieldValue, out string results)
-            => SetWindowValueModifiedDateTime(nProdID, sFormName, sWinName, sFieldName, ZeroDate + fieldValue.TimeOfDay, out results);
+        public static short SetWindowValueModifiedTime(short nProdID, string sFormName, string sWinName, string sFieldName, DateTime fieldValue, bool runValidate, out string results)
+            => SetWindowValueModifiedDateTime(nProdID, sFormName, sWinName, sFieldName, ZeroDate + fieldValue.TimeOfDay, runValidate, out results);
 
-        private static short SetWindowValueModified(short nProdID, string sFormName, string sWinName, string sFieldName, object fieldValue, out string results)
+        private static short SetWindowValueModified(short nProdID, string sFormName, string sWinName, string sFieldName, object fieldValue, bool runValidate, out string results)
         {
             DictionaryRoot cRoot;
             FieldBase fieldBase;
@@ -196,7 +196,7 @@ namespace TestAddIn
                 fieldBase = cRoot.Forms[sFormName].Windows[sWinName].Fields[sFieldName];
 
                 // Read Field Data
-                if (fieldBase.Extended().TrySetValue(fieldValue, out Result res))
+                if (fieldBase.Extended().TrySetValue(fieldValue, runValidate, out Result res))
                     nStatus = 0;
                 else
                 {
