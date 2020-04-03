@@ -8,8 +8,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Provides extended functionality to the Microsoft.Dexterity.Bridge library")]
 [assembly: AssemblyCompany("Hunton Group")]
 [assembly: AssemblyProduct("Microsoft.Dexterity.Bridge.Extended Library")]
-[assembly: AssemblyCopyright("Copyright © 2019")]
-[assembly: AssemblyVersion("18.0.1.2")]
+[assembly: AssemblyCopyright("Copyright © 2020")]
+[assembly: AssemblyVersion("18.0.1.3")]
 
 [assembly: ComVisible(false)]
 [assembly: DisablePrivateReflection]
