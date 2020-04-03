@@ -66,19 +66,4 @@ namespace TestAddIn
             DynGP.Dynamics.Forms.SyVisualStudioHelper.Functions.DexWarning.Invoke(msg);
         }
     }
-
-    public class WrappedProcedure : ProcedureBase
-    {
-        protected override Script WrappedScript { get; }
-
-        public WrappedProcedure(Script wrappedScript)
-        {
-            WrappedScript = wrappedScript ?? throw new ArgumentNullException(nameof(wrappedScript));
-        }
-
-        protected override void FireInvokeEvent(Argument[] arguments, Delegate handler)
-        {
-            handler.DynamicInvoke(this, arguments);
-        }
-    }
 }
