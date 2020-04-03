@@ -11,6 +11,9 @@ namespace TestAddIn
 {
     public class GPAddIn : IDexterityAddIn
     {
+
+        Delegate handler;
+
         public void Initialize()
         {
             var w = DictionaryRoots.Get(0, false).Forms["RM_Customer_Maintenance"].Windows["RM_Customer_Maintenance"];
@@ -20,6 +23,21 @@ namespace TestAddIn
             field.Change += Field_Change;
             WARN("Tag: " + window.EventDescriptions.BeforeModalDialog.TagId);
             WARN("Tag: " + field.EventDescriptions.Change.TagId);
+
+            handler = new Action<object, Argument[]>(Security_InvokeAfterOriginal);
+
+            var proc = DictionaryRoots.Get(0, false).Procedures["Security"];
+
+            TriggerManager.ProcedureTriggers.RegisterTrigger(new WrappedProcedure(proc), proc, AttachType.After, handler);
+        }
+
+        private void Security_InvokeAfterOriginal(object sender, Argument[] args)
+        {
+            StringBuilder str = new StringBuilder();
+            for (int i = 0; i < args.Length; i++)
+            {
+                str.AppendLine($"[({i})]:{args[0].Value}");
+            }
         }
 
         private void Window_BeforeModalDialog(object sender, BeforeModalDialogEventArgs e)
@@ -35,6 +53,21 @@ namespace TestAddIn
         private static void WARN(string msg)
         {
             DynGP.Dynamics.Forms.SyVisualStudioHelper.Functions.DexWarning.Invoke(msg);
+        }
+    }
+
+    public class WrappedProcedure : ProcedureBase
+    {
+        protected override Script WrappedScript { get; }
+
+        public WrappedProcedure(Script wrappedScript)
+        {
+            WrappedScript = wrappedScript ?? throw new ArgumentNullException(nameof(wrappedScript));
+        }
+
+        protected override void FireInvokeEvent(Argument[] arguments, Delegate handler)
+        {
+            handler.DynamicInvoke(this, arguments);
         }
     }
 }
