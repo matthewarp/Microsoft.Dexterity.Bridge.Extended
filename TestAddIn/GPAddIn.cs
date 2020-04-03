@@ -24,11 +24,22 @@ namespace TestAddIn
             WARN("Tag: " + window.EventDescriptions.BeforeModalDialog.TagId);
             WARN("Tag: " + field.EventDescriptions.Change.TagId);
 
-            handler = new Action<object, Argument[]>(Security_InvokeAfterOriginal);
+            handler = new Action<object, Argument[]>(Procedure_Event);
 
             var proc = DictionaryRoots.Get(0, false).Procedures["Security"];
+            var func = DictionaryRoots.Get(0, false).Functions["Security"];
 
             TriggerManager.ProcedureTriggers.RegisterTrigger(new WrappedProcedure(proc), proc, AttachType.After, handler);
+            TriggerManager.FunctionTriggers.RegisterTrigger(new WrappedFunction(func), func, AttachType.After, handler);
+        }
+
+        private void Procedure_Event(object sender, Argument[] args)
+        {
+            StringBuilder str = new StringBuilder();
+            for (int i = 0; i < args.Length; i++)
+            {
+                str.AppendLine($"[({i})]:{args[0].Value}");
+            }
         }
 
         private void Security_InvokeAfterOriginal(object sender, Argument[] args)
