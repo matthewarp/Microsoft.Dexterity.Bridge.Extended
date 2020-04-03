@@ -52,6 +52,11 @@ namespace Microsoft.Dexterity.Bridge.Extended
             return short.Parse(handler.Result);
         }
 
+        public void UnregisterTagId(short tagId)
+        {
+            Dispatch.UnregisterTrigger(tagId);
+        }
+
         public void SetParamHandler(object handler)
         {
             setParamHandler(handler);

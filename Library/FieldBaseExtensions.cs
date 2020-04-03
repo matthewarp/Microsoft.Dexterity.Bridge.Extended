@@ -4,7 +4,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
 {
     public static class FieldBaseExtensions
     {
-        private static Dictionary<string, FieldBaseExtended> _cache = new Dictionary<string, FieldBaseExtended>();
+        private static readonly Dictionary<string, FieldBaseExtended> _cache = new Dictionary<string, FieldBaseExtended>();
 
         public static FieldBaseExtended Extended(this FieldBase field)
         {

@@ -8,9 +8,9 @@ namespace Microsoft.Dexterity.Bridge.Extended
 {
     public static class DictionaryRootExtensions
     {
-        private static Dictionary<int, DictionaryRootExtended> fCache = new Dictionary<int, DictionaryRootExtended>();
+        private static readonly Dictionary<int, DictionaryRootExtended> fCache = new Dictionary<int, DictionaryRootExtended>();
 
-        private static Dictionary<int, DictionaryRootExtended> mCache = new Dictionary<int, DictionaryRootExtended>();
+        private static readonly Dictionary<int, DictionaryRootExtended> mCache = new Dictionary<int, DictionaryRootExtended>();
 
         public static DictionaryRootExtended Extended(this DictionaryRoot dic)
         {

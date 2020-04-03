@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Dexterity.Bridge.Extended.Events;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
 
         public Window Window { get; }
 
-        public EventDescriptions.Window EventDescriptions { get; }
+        public WindowsEventDescriptions EventDescriptions { get; }
 
         public bool IsChanged => Window.IsChanged;
 
@@ -46,7 +47,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
 
             CanClose = (doClose = TryMethod("Close")) != null;
 
-            EventDescriptions = new EventDescriptions.Window(
+            EventDescriptions = new WindowsEventDescriptions(
                 EventDescription.EventHandler(o => window.ActivateAfterOriginal += o, window),
                 EventDescription.CancelEventHandler(o => window.ActivateBeforeOriginal += o, window),
                 EventDescription.EventHandler<AfterModalDialogEventArgs>(o=>TriggerManager.DialogTriggers.RegisterTrigger(new WindowWrapper(window), AttachType.After, o), window),

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Dexterity.Bridge.Extended.Events;
+using System;
 using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -24,7 +25,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
 
         public FieldBase Field { get; }
 
-        public EventDescriptions.Field EventDescriptions { get; }
+        public FieldEventDescriptions EventDescriptions { get; }
 
         private readonly Func<object> getValue;
         private readonly Action<object> setValue;
@@ -32,7 +33,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
         private readonly Action doRunValidate, doShow, doHide, doLock, doUnlock, doEnable, doDisable, doFocus;
 
 
-        internal FieldBaseExtended(FieldBase field, bool enableEvents = true)
+        internal FieldBaseExtended(FieldBase field)
         {
             Field = field;
 
@@ -48,22 +49,17 @@ namespace Microsoft.Dexterity.Bridge.Extended
             CanDisable = (doDisable = TryMethod("Disable")) != null;
             CanFocus = (doFocus = TryMethod("Focus")) != null;
 
-            EventDescriptions = Extended.EventDescriptions.Field.Empty;
-
-            if (!enableEvents)
-                return;
-
-            EventDescriptions = new EventDescriptions.Field(
-                    EventDescription.EventHandler(TryLocateEvent(nameof(ClickAfterOriginal)), field),
-                    EventDescription.CancelEventHandler(TryLocateEvent(nameof(ClickBeforeOriginal)), field),
-                    EventDescription.EventHandler(TryLocateEvent(nameof(Change)), field),
-                    EventDescription.EventHandler(TryLocateEvent(nameof(EnterAfterOriginal)), field),
-                    EventDescription.CancelEventHandler(TryLocateEvent(nameof(EnterBeforeOriginal)), field),
-                    EventDescription.EventHandler(TryLocateEvent(nameof(LeaveAfterOriginal)), field),
-                    EventDescription.CancelEventHandler(TryLocateEvent(nameof(LeaveBeforeOriginal)), field),
-                    EventDescription.EventHandler(TryLocateEvent(nameof(ValidateAfterOriginal)), field),
-                    EventDescription.CancelEventHandler(TryLocateEvent(nameof(ValidateBeforeOriginal)), field)
-                );
+            EventDescriptions = new FieldEventDescriptions(
+                EventDescription.EventHandler(TryLocateEvent(nameof(ClickAfterOriginal)), field),
+                EventDescription.CancelEventHandler(TryLocateEvent(nameof(ClickBeforeOriginal)), field),
+                EventDescription.EventHandler(TryLocateEvent(nameof(Change)), field),
+                EventDescription.EventHandler(TryLocateEvent(nameof(EnterAfterOriginal)), field),
+                EventDescription.CancelEventHandler(TryLocateEvent(nameof(EnterBeforeOriginal)), field),
+                EventDescription.EventHandler(TryLocateEvent(nameof(LeaveAfterOriginal)), field),
+                EventDescription.CancelEventHandler(TryLocateEvent(nameof(LeaveBeforeOriginal)), field),
+                EventDescription.EventHandler(TryLocateEvent(nameof(ValidateAfterOriginal)), field),
+                EventDescription.CancelEventHandler(TryLocateEvent(nameof(ValidateBeforeOriginal)), field)
+            );
         }
 
         public bool TryGetValue(out object value, out Result results)
@@ -77,7 +73,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
                 value = getValue();
                 return (results = Result.SUCCESS);
             }
-            catch(Exception ex) { return (results = new Result(ex.Message)); }
+            catch (Exception ex) { return (results = new Result(ex.Message)); }
         }
 
         public bool TryGetValue<T>(out T value, out Result results)
@@ -96,7 +92,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
                 value = (T)temp;
                 return (results = Result.SUCCESS);
             }
-            catch(Exception ex) { return (results = new Result(ex.Message)); }
+            catch (Exception ex) { return (results = new Result(ex.Message)); }
         }
 
         public bool TrySetValue(object value, bool runValidate, out Result results)
@@ -113,7 +109,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
                 else
                     return (results = Result.SUCCESS);
             }
-            catch(Exception ex) { return (results = new Result(ex.Message)); }
+            catch (Exception ex) { return (results = new Result(ex.Message)); }
         }
 
         public bool TryRunValidate(out Result results) => TryAction(doRunValidate, out results);

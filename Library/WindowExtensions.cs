@@ -8,7 +8,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
 {
     public static class WindowExtensions
     {
-        private static Dictionary<string, WindowExtended> _cache = new Dictionary<string, WindowExtended>();
+        private static readonly Dictionary<string, WindowExtended> _cache = new Dictionary<string, WindowExtended>();
 
         public static WindowExtended Extended(this Window window)
         {

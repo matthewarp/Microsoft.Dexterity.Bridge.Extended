@@ -58,9 +58,20 @@
     <Compile Include="DictionaryRootExtended.cs" />
     <Compile Include="DictionaryRootExtensions.cs" />
     <Compile Include="DictionaryRoots.cs" />
-    <Compile Include="EventDescription.cs" />
+    <Compile Include="Events\EventDescription.cs" />
+    <Compile Include="Events\EventDescriptionBase`T.cs" />
+    <Compile Include="Events\EventRegistration`T.cs" />
+    <Compile Include="Events\FieldEventDescriptions.cs" />
+    <Compile Include="Events\IEventDescription.cs" />
+    <Compile Include="Events\IEventRegistrationSource`T.cs" />
+    <Compile Include="Events\ScriptEventDescriptions.cs" />
+    <Compile Include="Events\Sources\DelegatedEventRegistrationSource.cs" />
+    <Compile Include="Events\Sources\ReflectedEventRegistrationSource`T.cs" />
+    <Compile Include="Events\WindowsEventDescriptions.cs" />
+    <Compile Include="ScriptExtended.cs" />
+    <Compile Include="ScriptExtensions.cs" />
+    <Compile Include="ScriptEventArgs.cs" />
     <Compile Include="WindowExtended.cs" />
-    <Compile Include="EventDescriptions.cs" />
     <Compile Include="FieldBaseExtensions.cs" />
     <Compile Include="FieldBaseExtended.cs" />
     <Compile Include="GenericAdditionalMenus.cs" />
@@ -71,14 +82,13 @@
     <Compile Include="WindowExtensions.cs" />
     <Compile Include="WrappedFunction.cs" />
     <Compile Include="WrappedProcedure.cs" />
+    <Compile Include="WrappedWindow.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Library.nuspec" />
     <None Include="Microsoft.Dexterity.Bridge.Extended.pfx" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Events\Impl\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>signtool.exe $(TargetPath)
