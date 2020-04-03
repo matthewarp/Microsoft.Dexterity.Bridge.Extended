@@ -208,6 +208,8 @@ namespace Microsoft.Dexterity.Bridge.Extended
 
     public static class EventDescription
     {
+        internal static Dictionary<short, IEventDescription> events = new Dictionary<short, IEventDescription>();
+
         public static CancelEventHandlerDescription CancelEventHandler(EventInfo i, DictionaryElement target)
         {
             if (i is null || target is null)
@@ -255,6 +257,15 @@ namespace Microsoft.Dexterity.Bridge.Extended
 
             return new EventHandlerDescription<T>(new EventHandlerDelegatedEventSource<T>(action), target.Dictionary);
         }
+
+        public static void UnregisterByTagId(short tagId)
+        {
+            if (!events.ContainsKey(tagId))
+                return;
+
+            events[tagId].Unregister();
+            events.Remove(tagId);
+        }
     }
 
     public abstract class EventDescription<T> : IEventDescription<T>
@@ -288,8 +299,18 @@ namespace Microsoft.Dexterity.Bridge.Extended
                 source.RegisterWithDexterity();
                 TagId = dictionary.LastRegisteredEvent();
                 Registered = true;
+                EventDescription.events[TagId] = this;
             }
             catch { }
+        }
+
+        public void Unregister()
+        {
+            registrationAttempted = false;
+            Registered = false;
+            TagId = 0;
+
+            UnsubscribeAll();
         }
 
         public void Subscribe(T subscriber)

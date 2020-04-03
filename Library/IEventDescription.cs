@@ -11,6 +11,8 @@ namespace Microsoft.Dexterity.Bridge.Extended
 
         void Register();
 
+        void Unregister();
+
         void UnsubscribeAll();
     }
 }

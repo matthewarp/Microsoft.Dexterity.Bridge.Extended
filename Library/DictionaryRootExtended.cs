@@ -47,7 +47,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
         {
             ParameterHandler handler = new ParameterHandler();
             setParamHandler(handler);
-            ExecuteSanscript("local integer l_tag;system 5156, l_tag;OLE_SetProperty(\"Result\", str(l_tag));", out _);
+            ExecuteSanscript("local integer l_tag; system 5156, l_tag; OLE_SetProperty(\"Result\", str(l_tag));", out _);
 
             return short.Parse(handler.Result);
         }
