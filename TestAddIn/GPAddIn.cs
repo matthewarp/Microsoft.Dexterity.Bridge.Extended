@@ -13,14 +13,23 @@ namespace TestAddIn
     {
         public void Initialize()
         {
-            var field = DictionaryRoots.Get(0, false).Forms["RM_Customer_Maintenance"].Windows["RM_Customer_Maintenance"].Fields["Customer Number"].Extended();
+            var w = DictionaryRoots.Get(0, false).Forms["RM_Customer_Maintenance"].Windows["RM_Customer_Maintenance"];
+            var window = w.Extended();
+            var field = window.Window.Fields["Customer Number"].Extended();
+            window.BeforeModalDialog += Window_BeforeModalDialog;
             field.Change += Field_Change;
-            WARN("Registered RM_Customer_Maintenance / Customer Number Change event, Tag: " + field.EventDescriptions.Change.TagId);
+            WARN("Tag: " + window.EventDescriptions.BeforeModalDialog.TagId);
+            WARN("Tag: " + field.EventDescriptions.Change.TagId);
+        }
+
+        private void Window_BeforeModalDialog(object sender, BeforeModalDialogEventArgs e)
+        {
+            WARN("Modal");
         }
 
         private void Field_Change(object sender, EventArgs e)
         {
-            WARN("Hello There - " + sender.GetType());
+            WARN("Field Change");
         }
 
         private static void WARN(string msg)

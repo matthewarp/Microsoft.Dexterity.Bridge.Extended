@@ -24,7 +24,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
 
         public FieldBase Field { get; }
 
-        public EventDescriptions EventDescriptions { get; }
+        public EventDescriptions.Field EventDescriptions { get; }
 
         private readonly Func<object> getValue;
         private readonly Action<object> setValue;
@@ -48,21 +48,21 @@ namespace Microsoft.Dexterity.Bridge.Extended
             CanDisable = (doDisable = TryMethod("Disable")) != null;
             CanFocus = (doFocus = TryMethod("Focus")) != null;
 
-            EventDescriptions = EventDescriptions.Empty;
+            EventDescriptions = Extended.EventDescriptions.Field.Empty;
 
             if (!enableEvents)
                 return;
 
-            EventDescriptions = new EventDescriptions(
-                    EventDescription.Create(TryLocateEvent(nameof(ClickAfterOriginal)), field),
-                    CancelEventDescription.Create(TryLocateEvent(nameof(ClickBeforeOriginal)), field),
-                    EventDescription.Create(TryLocateEvent(nameof(Change)), field),
-                    EventDescription.Create(TryLocateEvent(nameof(EnterAfterOriginal)), field),
-                    CancelEventDescription.Create(TryLocateEvent(nameof(EnterBeforeOriginal)), field),
-                    EventDescription.Create(TryLocateEvent(nameof(LeaveAfterOriginal)), field),
-                    CancelEventDescription.Create(TryLocateEvent(nameof(LeaveBeforeOriginal)), field),
-                    EventDescription.Create(TryLocateEvent(nameof(ValidateAfterOriginal)), field),
-                    CancelEventDescription.Create(TryLocateEvent(nameof(ValidateBeforeOriginal)), field)
+            EventDescriptions = new EventDescriptions.Field(
+                    EventDescription.EventHandler(TryLocateEvent(nameof(ClickAfterOriginal)), field),
+                    EventDescription.CancelEventHandler(TryLocateEvent(nameof(ClickBeforeOriginal)), field),
+                    EventDescription.EventHandler(TryLocateEvent(nameof(Change)), field),
+                    EventDescription.EventHandler(TryLocateEvent(nameof(EnterAfterOriginal)), field),
+                    EventDescription.CancelEventHandler(TryLocateEvent(nameof(EnterBeforeOriginal)), field),
+                    EventDescription.EventHandler(TryLocateEvent(nameof(LeaveAfterOriginal)), field),
+                    EventDescription.CancelEventHandler(TryLocateEvent(nameof(LeaveBeforeOriginal)), field),
+                    EventDescription.EventHandler(TryLocateEvent(nameof(ValidateAfterOriginal)), field),
+                    EventDescription.CancelEventHandler(TryLocateEvent(nameof(ValidateBeforeOriginal)), field)
                 );
         }
 

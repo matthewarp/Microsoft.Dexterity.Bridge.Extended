@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>DynamicsGP.Microsoft.Dexterity.Bridge.Extended</id>
+    <id>Microsoft.Dexterity.Bridge.Extended</id>
     <version>18.0.1.2</version>
     <title>$title$</title>
     <authors>Matthew Arp</authors>
