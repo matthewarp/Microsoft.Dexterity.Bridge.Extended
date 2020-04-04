@@ -21,7 +21,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
             args[0] = returnValue;
             Array.Copy(arguments, 0, args, 1, arguments.Length);
 
-            handler.DynamicInvoke(this, args);
+            handler.DynamicInvoke(this, new ScriptEventArgs(args));
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
 
         protected override void FireInvokeEvent(Argument[] arguments, Delegate handler)
         {
-            handler.DynamicInvoke(this, arguments);
+            handler.DynamicInvoke(this, new ScriptEventArgs(arguments));
         }
     }
 }
