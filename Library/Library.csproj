@@ -75,8 +75,6 @@
     <Compile Include="FieldBaseExtensions.cs" />
     <Compile Include="FieldBaseExtended.cs" />
     <Compile Include="GenericAdditionalMenus.cs" />
-    <Compile Include="IEventDescription.cs" />
-    <Compile Include="IEventDescription`T.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Result.cs" />
     <Compile Include="WindowExtensions.cs" />
