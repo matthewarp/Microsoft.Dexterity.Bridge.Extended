@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Dexterity.Bridge.Extended.Events.Sources;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace Microsoft.Dexterity.Bridge.Extended.Events
 {
     public abstract class EventDescriptionBase<T> : IEventDescription where T : Delegate
     {
+        public bool Available => Source.Available;
+
         public IEventRegistrationSource<T> Source { get; }
 
         public IEnumerable<short> TagIds => registrations.Select(o => o.TagId);
@@ -24,6 +27,9 @@ namespace Microsoft.Dexterity.Bridge.Extended.Events
 
         private void Subscribe(EventRegistration<T> registration)
         {
+            if (registration == null)
+                return;
+
             registrations.Add(registration);
             EventDescription.Registry.Add(registration.TagId, this);
         }
@@ -60,16 +66,22 @@ namespace Microsoft.Dexterity.Bridge.Extended.Events
 
     public sealed class EventHandlerDescription : EventDescriptionBase<EventHandler>
     {
+        internal static readonly EventHandlerDescription Empty = new EventHandlerDescription(new NullEventRegistrationSource<EventHandler>());
+
         public EventHandlerDescription(IEventRegistrationSource<EventHandler> source) : base(source) { }
     }
 
     public sealed class EventHandlerDescription<T> : EventDescriptionBase<EventHandler<T>>
     {
+        internal static readonly EventHandlerDescription<T> Empty = new EventHandlerDescription<T>(new NullEventRegistrationSource<EventHandler<T>>());
+
         public EventHandlerDescription(IEventRegistrationSource<EventHandler<T>> source) : base(source) { }
     }
 
     public sealed class CancelEventHandlerDescription : EventDescriptionBase<CancelEventHandler>
     {
+        internal static readonly CancelEventHandlerDescription Empty = new CancelEventHandlerDescription(new NullEventRegistrationSource<CancelEventHandler>());
+
         public CancelEventHandlerDescription(IEventRegistrationSource<CancelEventHandler> source) : base(source) { }
     }
 }

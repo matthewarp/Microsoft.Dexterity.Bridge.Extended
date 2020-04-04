@@ -10,16 +10,13 @@ using DynGP = Microsoft.Dexterity.Applications;
 namespace TestAddIn
 {
     public class GPAddIn : IDexterityAddIn
-    {
-
-        Delegate handler;
-
+    { 
         public void Initialize()
         {
             var dictionary = DictionaryRoots.Get(0, false);
             var window = dictionary.Forms["RM_Customer_Maintenance"].Windows["RM_Customer_Maintenance"].Extended();
             var field = window.Window.Fields["Customer Number"].Extended();
-            var proc = dictionary.Procedures["Security"].Extended();
+            var proc = dictionary.Procedures["Messenger_Status"].Extended();
             var func = dictionary.Functions["Security"].Extended();
 
             window.BeforeModalDialog += Window_BeforeModalDialog;
@@ -27,18 +24,22 @@ namespace TestAddIn
             field.Change += Field_Change1;
             field.Change += Field_Change2;
 
+            field.ClickAfterOriginal += Field_ClickAfterOriginal; // Adding an event that isn't available does nothing
+
             proc.AfterInvoke += Proc_AfterInvoke;
-            func.AfterInvoke += Func_AfterInvoke;
+            func.AfterInvoke += Func_AfterInvoke; //Adding an event to an un-Supported Func/Proc does nothing
 
             WARN("Window Tag: " + string.Join(",",window.EventDescriptions.BeforeModalDialog.TagIds));
             WARN("Field Tag: " + string.Join(",", field.EventDescriptions.Change.TagIds));
             WARN("Proc Tag: " + string.Join(",", proc.EventDescriptions.AfterInvoke.TagIds));
             WARN("Func Tag: " + string.Join(",", func.EventDescriptions.AfterInvoke.TagIds));
 
-            field.Change -= Field_Change2;
+            field.Change -= Field_Change2; // Removing a handler will remove the Tag from Dexterity and remove the handler reference
 
             WARN("Field Tag: " + string.Join(",", field.EventDescriptions.Change.TagIds));
         }
+
+        private void Field_ClickAfterOriginal(object sender, EventArgs e) { throw new NotImplementedException(); }
 
         private void Func_AfterInvoke(object sender, ScriptEventArgs e)
         {

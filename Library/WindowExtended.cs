@@ -17,16 +17,16 @@ namespace Microsoft.Dexterity.Bridge.Extended
             public WindowWrapper(Window window) : base(window) { }
         }
 
-        public event EventHandler ActivateAfterOriginal { add => EventDescriptions.ActivateAfterOriginal?.Subscribe(value); remove => EventDescriptions.ActivateAfterOriginal?.Unsubscribe(value); }
-        public event CancelEventHandler ActivateBeforeOriginal { add => EventDescriptions.ActivateBeforeOriginal?.Subscribe(value); remove => EventDescriptions.ActivateBeforeOriginal?.Unsubscribe(value); }
-        public event EventHandler<AfterModalDialogEventArgs> AfterModalDialog { add => EventDescriptions.AfterModalDialog?.Subscribe(value); remove => EventDescriptions.AfterModalDialog?.Unsubscribe(value); }
-        public event EventHandler<BeforeModalDialogEventArgs> BeforeModalDialog { add => EventDescriptions.BeforeModalDialog?.Subscribe(value); remove => EventDescriptions.BeforeModalDialog?.Unsubscribe(value); }
-        public event EventHandler CloseAfterOriginal { add => EventDescriptions.CloseAfterOriginal?.Subscribe(value); remove => EventDescriptions.CloseAfterOriginal?.Unsubscribe(value); }
-        public event CancelEventHandler CloseBeforeOriginal { add => EventDescriptions.CloseBeforeOriginal?.Subscribe(value); remove => EventDescriptions.CloseBeforeOriginal?.Unsubscribe(value); }
-        public event EventHandler OpenAfterOriginal { add => EventDescriptions.OpenAfterOriginal?.Subscribe(value); remove => EventDescriptions.OpenAfterOriginal?.Unsubscribe(value); }
-        public event CancelEventHandler OpenBeforeOriginal { add => EventDescriptions.OpenBeforeOriginal?.Subscribe(value); remove => EventDescriptions.OpenBeforeOriginal?.Unsubscribe(value); }
-        public event EventHandler PrintAfterOriginal { add => EventDescriptions.PrintAfterOriginal?.Subscribe(value); remove => EventDescriptions.PrintAfterOriginal?.Unsubscribe(value); }
-        public event CancelEventHandler PrintBeforeOriginal { add => EventDescriptions.PrintBeforeOriginal?.Subscribe(value); remove => EventDescriptions.PrintBeforeOriginal?.Unsubscribe(value); }
+        public event EventHandler ActivateAfterOriginal { add => EventDescriptions.ActivateAfterOriginal.Subscribe(value); remove => EventDescriptions.ActivateAfterOriginal.Unsubscribe(value); }
+        public event CancelEventHandler ActivateBeforeOriginal { add => EventDescriptions.ActivateBeforeOriginal.Subscribe(value); remove => EventDescriptions.ActivateBeforeOriginal.Unsubscribe(value); }
+        public event EventHandler<AfterModalDialogEventArgs> AfterModalDialog { add => EventDescriptions.AfterModalDialog.Subscribe(value); remove => EventDescriptions.AfterModalDialog.Unsubscribe(value); }
+        public event EventHandler<BeforeModalDialogEventArgs> BeforeModalDialog { add => EventDescriptions.BeforeModalDialog.Subscribe(value); remove => EventDescriptions.BeforeModalDialog.Unsubscribe(value); }
+        public event EventHandler CloseAfterOriginal { add => EventDescriptions.CloseAfterOriginal.Subscribe(value); remove => EventDescriptions.CloseAfterOriginal.Unsubscribe(value); }
+        public event CancelEventHandler CloseBeforeOriginal { add => EventDescriptions.CloseBeforeOriginal.Subscribe(value); remove => EventDescriptions.CloseBeforeOriginal.Unsubscribe(value); }
+        public event EventHandler OpenAfterOriginal { add => EventDescriptions.OpenAfterOriginal.Subscribe(value); remove => EventDescriptions.OpenAfterOriginal.Unsubscribe(value); }
+        public event CancelEventHandler OpenBeforeOriginal { add => EventDescriptions.OpenBeforeOriginal.Subscribe(value); remove => EventDescriptions.OpenBeforeOriginal.Unsubscribe(value); }
+        public event EventHandler PrintAfterOriginal { add => EventDescriptions.PrintAfterOriginal.Subscribe(value); remove => EventDescriptions.PrintAfterOriginal.Unsubscribe(value); }
+        public event CancelEventHandler PrintBeforeOriginal { add => EventDescriptions.PrintBeforeOriginal.Subscribe(value); remove => EventDescriptions.PrintBeforeOriginal.Unsubscribe(value); }
 
 
         public Window Window { get; }

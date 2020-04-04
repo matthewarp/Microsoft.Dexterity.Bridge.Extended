@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Dexterity.Bridge.Extended
 {
-    public class WrappedProcedure : ProcedureBase
+    internal class WrappedProcedure : ProcedureBase
     {
         protected override Script WrappedScript { get; }
 

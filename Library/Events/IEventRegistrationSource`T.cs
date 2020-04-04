@@ -11,5 +11,7 @@ namespace Microsoft.Dexterity.Bridge.Extended.Events
         EventRegistration<T> Register(T handler);
 
         void Unregister(EventRegistration<T> registration);
+
+        bool Available { get; }
     }
 }

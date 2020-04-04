@@ -19,6 +19,6 @@ namespace Microsoft.Dexterity.Bridge.Extended
             return _cache[key];
         }
 
-        public static string Key(this Script field) => $"{(field.IsFunction ? "FUNCTION" : "PROCEDURE")} {field.FullName} in {field.Dictionary.ProductId}";
+        public static string Key(this Script field) => $"{field.FullName} in {field.Dictionary.ProductId}";
     }
 }

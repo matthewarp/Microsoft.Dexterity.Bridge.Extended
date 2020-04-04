@@ -9,6 +9,8 @@ namespace Microsoft.Dexterity.Bridge.Extended.Events.Sources
 {
     internal class ReflectedEventRegistrationSource<T> : IEventRegistrationSource<T> where T : Delegate
     {
+        public bool Available => true;
+
         private readonly EventInfo eventInfo;
 
         private readonly object target;

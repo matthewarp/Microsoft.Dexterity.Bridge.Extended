@@ -8,6 +8,8 @@ namespace Microsoft.Dexterity.Bridge.Extended.Events
 {
     public class FieldEventDescriptions
     {
+        internal static readonly FieldEventDescriptions Empty = new FieldEventDescriptions(null, null, null, null, null, null, null, null, null);
+
         public EventHandlerDescription ClickAfterOriginal { get; }
 
         public CancelEventHandlerDescription ClickBeforeOriginal { get; }
@@ -26,39 +28,17 @@ namespace Microsoft.Dexterity.Bridge.Extended.Events
 
         public CancelEventHandlerDescription ValidateBeforeOriginal { get; }
 
-        public bool CanGetValue { get; }
-
-        public bool CanSetValue { get; }
-
-        public bool CanClickAfterOriginal { get; }
-
-        public bool CanClickBeforeOriginal { get; }
-
-        public bool CanChange { get; }
-
-        public bool CanEnterAfterOriginal { get; }
-
-        public bool CanEnterBeforeOriginal { get; }
-
-        public bool CanLeaveAfterOriginal { get; }
-
-        public bool CanLeaveBeforeOriginal { get; }
-
-        public bool CanValidateAfterOriginal { get; }
-
-        public bool CanValidateBeforeOriginal { get; }
-
         internal FieldEventDescriptions(EventHandlerDescription clickAfterOriginal, CancelEventHandlerDescription clickBeforeOriginal, EventHandlerDescription change, EventHandlerDescription enterAfterOriginal, CancelEventHandlerDescription enterBeforeOriginal, EventHandlerDescription leaveAfterOriginal, CancelEventHandlerDescription leaveBeforeOriginal, EventHandlerDescription validateAfterOriginal, CancelEventHandlerDescription validateBeforeOriginal)
         {
-            CanClickAfterOriginal = (ClickAfterOriginal = clickAfterOriginal) != null;
-            CanClickBeforeOriginal = (ClickBeforeOriginal = clickBeforeOriginal) != null;
-            CanChange = (Change = change) != null;
-            CanEnterAfterOriginal = (EnterAfterOriginal = enterAfterOriginal) != null;
-            CanEnterBeforeOriginal = (EnterBeforeOriginal = enterBeforeOriginal) != null;
-            CanLeaveAfterOriginal = (LeaveAfterOriginal = leaveAfterOriginal) != null;
-            CanLeaveBeforeOriginal = (LeaveBeforeOriginal = leaveBeforeOriginal) != null;
-            CanValidateAfterOriginal = (ValidateAfterOriginal = validateAfterOriginal) != null;
-            CanValidateBeforeOriginal = (ValidateBeforeOriginal = validateBeforeOriginal) != null;
+            ClickAfterOriginal = clickAfterOriginal ?? EventHandlerDescription.Empty;
+            ClickBeforeOriginal = clickBeforeOriginal ?? CancelEventHandlerDescription.Empty;
+            Change = change ?? EventHandlerDescription.Empty;
+            EnterAfterOriginal = enterAfterOriginal ?? EventHandlerDescription.Empty;
+            EnterBeforeOriginal = enterBeforeOriginal ?? CancelEventHandlerDescription.Empty;
+            LeaveAfterOriginal = leaveAfterOriginal ?? EventHandlerDescription.Empty;
+            LeaveBeforeOriginal = leaveBeforeOriginal ?? CancelEventHandlerDescription.Empty;
+            ValidateAfterOriginal = validateAfterOriginal ?? EventHandlerDescription.Empty;
+            ValidateBeforeOriginal = validateBeforeOriginal ?? CancelEventHandlerDescription.Empty;
         }
     }
 }

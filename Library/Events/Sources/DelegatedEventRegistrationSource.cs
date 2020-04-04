@@ -8,6 +8,8 @@ namespace Microsoft.Dexterity.Bridge.Extended.Events.Sources
 {
     internal class DelegatedEventRegistrationSource<T> : IEventRegistrationSource<T> where T : Delegate
     {
+        public bool Available => true;
+
         private readonly Action<T> registerWithDexterity;
 
         private readonly Action<EventRegistration<T>> unregisterWithDexterity;

@@ -8,6 +8,8 @@ namespace Microsoft.Dexterity.Bridge.Extended.Events
 {
     public class WindowsEventDescriptions
     {
+        internal static readonly WindowsEventDescriptions Empty = new WindowsEventDescriptions(null, null, null, null, null, null, null, null, null, null);
+
         public EventHandlerDescription ActivateAfterOriginal { get; }
 
         public CancelEventHandlerDescription ActivateBeforeOriginal { get; }
@@ -28,22 +30,18 @@ namespace Microsoft.Dexterity.Bridge.Extended.Events
 
         public CancelEventHandlerDescription PrintBeforeOriginal { get; }
 
-        public bool CanAfterModalDialog { get; }
-
-        public bool CanBeforeModalDialog { get; }
-
         public WindowsEventDescriptions(EventHandlerDescription activateAfterOriginal, CancelEventHandlerDescription activateBeforeOriginal, EventHandlerDescription<AfterModalDialogEventArgs> afterModalDialog, EventHandlerDescription<BeforeModalDialogEventArgs> beforeModalDialog, EventHandlerDescription closeAfterOriginal, CancelEventHandlerDescription closeBeforeOriginal, EventHandlerDescription openAfterOriginal, CancelEventHandlerDescription openBeforeOriginal, EventHandlerDescription printAfterOriginal, CancelEventHandlerDescription printBeforeOriginal)
         {
-            ActivateAfterOriginal = activateAfterOriginal;
-            ActivateBeforeOriginal = activateBeforeOriginal;
-            CanAfterModalDialog = (AfterModalDialog = afterModalDialog) != null;
-            CanBeforeModalDialog = (BeforeModalDialog = beforeModalDialog) != null;
-            CloseAfterOriginal = closeAfterOriginal;
-            CloseBeforeOriginal = closeBeforeOriginal;
-            OpenAfterOriginal = openAfterOriginal;
-            OpenBeforeOriginal = openBeforeOriginal;
-            PrintAfterOriginal = printAfterOriginal;
-            PrintBeforeOriginal = printBeforeOriginal;
+            ActivateAfterOriginal = activateAfterOriginal ?? EventHandlerDescription.Empty;
+            ActivateBeforeOriginal = activateBeforeOriginal ?? CancelEventHandlerDescription.Empty;
+            AfterModalDialog = afterModalDialog ?? EventHandlerDescription<AfterModalDialogEventArgs>.Empty;
+            BeforeModalDialog = beforeModalDialog ?? EventHandlerDescription<BeforeModalDialogEventArgs>.Empty;
+            CloseAfterOriginal = closeAfterOriginal ?? EventHandlerDescription.Empty;
+            CloseBeforeOriginal = closeBeforeOriginal ?? CancelEventHandlerDescription.Empty;
+            OpenAfterOriginal = openAfterOriginal ?? EventHandlerDescription.Empty;
+            OpenBeforeOriginal = openBeforeOriginal ?? CancelEventHandlerDescription.Empty;
+            PrintAfterOriginal = printAfterOriginal ?? EventHandlerDescription.Empty;
+            PrintBeforeOriginal = printBeforeOriginal ?? CancelEventHandlerDescription.Empty;
         }
     }
 }

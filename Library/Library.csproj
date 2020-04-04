@@ -66,6 +66,7 @@
     <Compile Include="Events\IEventRegistrationSource`T.cs" />
     <Compile Include="Events\ScriptEventDescriptions.cs" />
     <Compile Include="Events\Sources\DelegatedEventRegistrationSource.cs" />
+    <Compile Include="Events\Sources\NullEventRegistrationSource.cs" />
     <Compile Include="Events\Sources\ReflectedEventRegistrationSource`T.cs" />
     <Compile Include="Events\WindowsEventDescriptions.cs" />
     <Compile Include="ScriptExtended.cs" />

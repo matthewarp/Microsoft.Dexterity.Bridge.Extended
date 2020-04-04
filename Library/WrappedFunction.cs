@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Dexterity.Bridge.Extended
 {
-    public class WrappedFunction : FunctionBase
+    internal class WrappedFunction : FunctionBase
     {
         protected override Script WrappedScript { get; }
 

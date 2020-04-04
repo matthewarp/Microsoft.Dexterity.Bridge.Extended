@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace Microsoft.Dexterity.Bridge.Extended
 {
-    public delegate short SetParamHandler(object callbackObject);
+    internal delegate short SetParamHandler(object callbackObject);
 
     public class DictionaryRootExtended
     {
         public DictionaryRoot Dictionary { get; }
 
-        public IAppDispatch Dispatch { get; }
+        private readonly IAppDispatch dispatch;
 
         private readonly SetParamHandler setParamHandler;
 
@@ -39,7 +39,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
 
             controller = controllerInfo.GetValue(dic);
             appProxy = appProxyInfo.GetValue(controller);
-            Dispatch = (IAppDispatch)appDispatchInfo.GetValue(appProxy);
+            dispatch = (IAppDispatch)appDispatchInfo.GetValue(appProxy);
             setParamHandler = (SetParamHandler)setParaHandlerInfo.CreateDelegate(typeof(SetParamHandler), appProxy);
         }
 
@@ -54,7 +54,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
 
         public void UnregisterTagId(short tagId)
         {
-            Dispatch.UnregisterTrigger(tagId);
+            dispatch.UnregisterTrigger(tagId);
         }
 
         public void SetParamHandler(object handler)
@@ -64,15 +64,21 @@ namespace Microsoft.Dexterity.Bridge.Extended
 
         public unsafe short ExecuteSanscript(string codeString, out string compilerErrorMessage)
         {
-            compilerErrorMessage = string.Empty;
-            char* pointer = (char*)Marshal.StringToBSTR(codeString).ToPointer();
-            char* chPtr;
-            short num = Dispatch.ExecuteSanscript(pointer, &chPtr);
-            IntPtr ptr = (IntPtr)((void*)chPtr);
-            compilerErrorMessage = Marshal.PtrToStringBSTR(ptr);
-            Marshal.FreeBSTR((IntPtr)((void*)pointer));
-            Marshal.FreeBSTR((IntPtr)((void*)chPtr));
-            return num;
+            try
+            {
+                char* pointer = (char*)Marshal.StringToBSTR(codeString).ToPointer();
+                char* chPtr;
+                short num = dispatch.ExecuteSanscript(pointer, &chPtr);
+                IntPtr ptr = (IntPtr)((void*)chPtr);
+                compilerErrorMessage = Marshal.PtrToStringBSTR(ptr);
+                Marshal.FreeBSTR((IntPtr)((void*)pointer));
+                Marshal.FreeBSTR((IntPtr)((void*)chPtr));
+                return num;
+            }catch(Exception ex)
+            {
+                compilerErrorMessage = ex.Message;
+                return -1;
+            }
         }
     }
 }

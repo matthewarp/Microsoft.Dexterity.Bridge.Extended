@@ -10,16 +10,16 @@ namespace Microsoft.Dexterity.Bridge.Extended
     {
         public object Value { get => getValue?.Invoke() ?? throw new InvalidOperationException(); set { if (setValue is null) throw new InvalidOperationException(); setValue(value); } }
 
-        public event EventHandler ClickAfterOriginal { add => EventDescriptions.ClickAfterOriginal?.Subscribe(value); remove => EventDescriptions.ClickAfterOriginal?.Unsubscribe(value); }
-        public event CancelEventHandler ClickBeforeOriginal { add => EventDescriptions.ClickBeforeOriginal?.Subscribe(value); remove => EventDescriptions.ClickBeforeOriginal?.Unsubscribe(value); }
+        public event EventHandler ClickAfterOriginal { add => EventDescriptions.ClickAfterOriginal.Subscribe(value); remove => EventDescriptions.ClickAfterOriginal.Unsubscribe(value); }
+        public event CancelEventHandler ClickBeforeOriginal { add => EventDescriptions.ClickBeforeOriginal.Subscribe(value); remove => EventDescriptions.ClickBeforeOriginal.Unsubscribe(value); }
 
-        public event EventHandler Change { add => EventDescriptions.Change?.Subscribe(value); remove => EventDescriptions.Change?.Unsubscribe(value); }
-        public event EventHandler EnterAfterOriginal { add => EventDescriptions.EnterAfterOriginal?.Subscribe(value); remove => EventDescriptions.EnterAfterOriginal?.Unsubscribe(value); }
-        public event CancelEventHandler EnterBeforeOriginal { add => EventDescriptions.EnterBeforeOriginal?.Subscribe(value); remove => EventDescriptions.EnterBeforeOriginal?.Unsubscribe(value); }
-        public event EventHandler LeaveAfterOriginal { add => EventDescriptions.LeaveAfterOriginal?.Subscribe(value); remove => EventDescriptions.LeaveAfterOriginal?.Unsubscribe(value); }
-        public event CancelEventHandler LeaveBeforeOriginal { add => EventDescriptions.LeaveBeforeOriginal?.Subscribe(value); remove => EventDescriptions.LeaveBeforeOriginal?.Unsubscribe(value); }
-        public event EventHandler ValidateAfterOriginal { add => EventDescriptions.ValidateAfterOriginal?.Subscribe(value); remove => EventDescriptions.ValidateAfterOriginal?.Unsubscribe(value); }
-        public event CancelEventHandler ValidateBeforeOriginal { add => EventDescriptions.ValidateBeforeOriginal?.Subscribe(value); remove => EventDescriptions.ValidateBeforeOriginal?.Unsubscribe(value); }
+        public event EventHandler Change { add => EventDescriptions.Change.Subscribe(value); remove => EventDescriptions.Change.Unsubscribe(value); }
+        public event EventHandler EnterAfterOriginal { add => EventDescriptions.EnterAfterOriginal.Subscribe(value); remove => EventDescriptions.EnterAfterOriginal.Unsubscribe(value); }
+        public event CancelEventHandler EnterBeforeOriginal { add => EventDescriptions.EnterBeforeOriginal.Subscribe(value); remove => EventDescriptions.EnterBeforeOriginal.Unsubscribe(value); }
+        public event EventHandler LeaveAfterOriginal { add => EventDescriptions.LeaveAfterOriginal.Subscribe(value); remove => EventDescriptions.LeaveAfterOriginal.Unsubscribe(value); }
+        public event CancelEventHandler LeaveBeforeOriginal { add => EventDescriptions.LeaveBeforeOriginal.Subscribe(value); remove => EventDescriptions.LeaveBeforeOriginal.Unsubscribe(value); }
+        public event EventHandler ValidateAfterOriginal { add => EventDescriptions.ValidateAfterOriginal.Subscribe(value); remove => EventDescriptions.ValidateAfterOriginal.Unsubscribe(value); }
+        public event CancelEventHandler ValidateBeforeOriginal { add => EventDescriptions.ValidateBeforeOriginal.Subscribe(value); remove => EventDescriptions.ValidateBeforeOriginal.Unsubscribe(value); }
 
         public readonly bool CanGetValue, CanSetValue, CanRunValidate, CanShow, CanHide, CanLock, CanUnlock, CanEnable, CanDisable, CanFocus;
 

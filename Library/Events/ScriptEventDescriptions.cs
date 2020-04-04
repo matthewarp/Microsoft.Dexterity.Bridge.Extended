@@ -8,15 +8,16 @@ namespace Microsoft.Dexterity.Bridge.Extended.Events
 {
     public class ScriptEventDescriptions
     {
+        internal static readonly ScriptEventDescriptions Empty = new ScriptEventDescriptions(null, null);
 
         public EventHandlerDescription<ScriptEventArgs> AfterInvoke { get; }
 
         public EventHandlerDescription<ScriptEventArgs> BeforeInvoke { get; }
 
-        public ScriptEventDescriptions(EventHandlerDescription<ScriptEventArgs> afterInvoke, EventHandlerDescription<ScriptEventArgs> beforeInvoke)
+        internal ScriptEventDescriptions(EventHandlerDescription<ScriptEventArgs> afterInvoke, EventHandlerDescription<ScriptEventArgs> beforeInvoke)
         {
-            AfterInvoke = afterInvoke;
-            BeforeInvoke = beforeInvoke;
+            AfterInvoke = afterInvoke ?? EventHandlerDescription<ScriptEventArgs>.Empty;
+            BeforeInvoke = beforeInvoke ?? EventHandlerDescription<ScriptEventArgs>.Empty;
         }
     }
 }
