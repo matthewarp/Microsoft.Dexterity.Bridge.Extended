@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("Hunton Group")]
 [assembly: AssemblyProduct("Microsoft.Dexterity.Bridge.Extended Library")]
 [assembly: AssemblyCopyright("Copyright © 2020")]
-[assembly: AssemblyVersion("18.0.1.4")]
+[assembly: AssemblyVersion("18.0.1.5")]
 
 [assembly: ComVisible(false)]
 [assembly: DisablePrivateReflection]
