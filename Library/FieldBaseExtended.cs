@@ -8,6 +8,8 @@ namespace Microsoft.Dexterity.Bridge.Extended
 {
     public class FieldBaseExtended
     {
+        private static readonly PropertyInfo idInfo;
+
         public object Value { get => getValue?.Invoke() ?? throw new InvalidOperationException(); set { if (setValue is null) throw new InvalidOperationException(); setValue(value); } }
 
         public event EventHandler ClickAfterOriginal { add => EventDescriptions.ClickAfterOriginal.Subscribe(value); remove => EventDescriptions.ClickAfterOriginal.Unsubscribe(value); }
@@ -23,6 +25,8 @@ namespace Microsoft.Dexterity.Bridge.Extended
 
         public readonly bool CanGetValue, CanSetValue, CanRunValidate, CanShow, CanHide, CanLock, CanUnlock, CanEnable, CanDisable, CanFocus;
 
+        public short Id { get; }
+
         public FieldBase Field { get; }
 
         public FieldEventDescriptions EventDescriptions { get; }
@@ -32,9 +36,16 @@ namespace Microsoft.Dexterity.Bridge.Extended
 
         private readonly Action doRunValidate, doShow, doHide, doLock, doUnlock, doEnable, doDisable, doFocus;
 
+        static FieldBaseExtended()
+        {
+            idInfo = typeof(FieldBase).GetProperty("Id", BindingFlags.Instance | BindingFlags.NonPublic);
+        }
+
 
         internal FieldBaseExtended(FieldBase field)
         {
+            Id = (short)idInfo.GetValue(field);
+
             Field = field;
 
             CanGetValue = (getValue = TryRegisterGetProperty(nameof(Value))) != null;

@@ -97,7 +97,7 @@ if $(ConfigurationName) == Debug goto :debug
 
 :release
 :: nuget.exe pack  -Properties Configuration=Release
-:: .\nuget.exe push *.nupkg -ApiKey oy2lralxet3ccelkbepq5ipxdog2enbebnpqg6usk2csaa
+:: .\nuget.exe push *.nupkg -ApiKey API_KEY_HERE
 goto :exit
 
 :debug
