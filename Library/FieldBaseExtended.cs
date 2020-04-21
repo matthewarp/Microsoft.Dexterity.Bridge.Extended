@@ -8,6 +8,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
 {
     public class FieldBaseExtended
     {
+        private const short POS_ONE = 1, NEG_ONE = -1;
         private static readonly PropertyInfo idInfo;
 
         public object Value { get => getValue?.Invoke() ?? throw new InvalidOperationException(); set { if (setValue is null) throw new InvalidOperationException(); setValue(value); } }
@@ -29,6 +30,8 @@ namespace Microsoft.Dexterity.Bridge.Extended
 
         public FieldBase Field { get; }
 
+        public bool IsLocal => Field.Name.Length >= 4 && Field.Name.Substring(0, 4) == "(L) ";
+
         public FieldEventDescriptions EventDescriptions { get; }
 
         private readonly Func<object> getValue;
@@ -44,9 +47,10 @@ namespace Microsoft.Dexterity.Bridge.Extended
 
         internal FieldBaseExtended(FieldBase field)
         {
-            Id = (short)idInfo.GetValue(field);
-
             Field = field;
+
+            Id = (short)idInfo.GetValue(field);
+            Id *= IsLocal ? NEG_ONE : POS_ONE;
 
             CanGetValue = (getValue = TryRegisterGetProperty(nameof(Value))) != null;
             CanSetValue = (setValue = TryRegisterSetProperty(nameof(Value))) != null;
