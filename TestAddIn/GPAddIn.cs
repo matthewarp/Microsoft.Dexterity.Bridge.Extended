@@ -14,6 +14,7 @@ namespace TestAddIn
         public void Initialize()
         {
             var dictionary = DictionaryRoots.Get(0, false);
+            var form = dictionary.Forms["RM_Customer_Maintenance"].Extended();
             var window = dictionary.Forms["RM_Customer_Maintenance"].Windows["RM_Customer_Maintenance"].Extended();
             var field = window.Window.Fields["Customer Number"].Extended();
             var proc = dictionary.Procedures["Messenger_Status"].Extended();

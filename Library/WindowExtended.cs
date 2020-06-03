@@ -17,6 +17,8 @@ namespace Microsoft.Dexterity.Bridge.Extended
             public WindowWrapper(Window window) : base(window) { }
         }
 
+        private static readonly PropertyInfo idInfo;
+
         public event EventHandler ActivateAfterOriginal { add => EventDescriptions.ActivateAfterOriginal.Subscribe(value); remove => EventDescriptions.ActivateAfterOriginal.Unsubscribe(value); }
         public event CancelEventHandler ActivateBeforeOriginal { add => EventDescriptions.ActivateBeforeOriginal.Subscribe(value); remove => EventDescriptions.ActivateBeforeOriginal.Unsubscribe(value); }
         public event EventHandler<AfterModalDialogEventArgs> AfterModalDialog { add => EventDescriptions.AfterModalDialog.Subscribe(value); remove => EventDescriptions.AfterModalDialog.Unsubscribe(value); }
@@ -31,6 +33,8 @@ namespace Microsoft.Dexterity.Bridge.Extended
 
         public Window Window { get; }
 
+        public short Id { get; }
+
         public WindowsEventDescriptions EventDescriptions { get; }
 
         public bool IsChanged => Window.IsChanged;
@@ -41,9 +45,16 @@ namespace Microsoft.Dexterity.Bridge.Extended
 
         private readonly Action doClose;
 
+        static WindowExtended()
+        {
+            idInfo = typeof(Window).GetProperty("Id", BindingFlags.Instance | BindingFlags.NonPublic);
+        }
+
         internal WindowExtended(Window window)
         {
             Window = window;
+
+            Id = (short)idInfo.GetValue(window);
 
             CanClose = (doClose = TryMethod("Close")) != null;
 

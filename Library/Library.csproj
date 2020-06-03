@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DictionaryFormExtended.cs" />
     <Compile Include="DictionaryFormExtensions.cs" />
     <Compile Include="DictionaryRootExtended.cs" />
     <Compile Include="DictionaryRootExtensions.cs" />
