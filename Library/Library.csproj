@@ -39,10 +39,8 @@
     <AssemblyOriginatorKeyFile>Microsoft.Dexterity.Bridge.Extended.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Dexterity.Bridge, Version=18.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft Dynamics\GP2018\Microsoft.Dexterity.Bridge.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Microsoft.Dexterity.Bridge">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft Dynamics\GP2018$PAYROLL\Microsoft.Dexterity.Bridge.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

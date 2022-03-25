@@ -11,7 +11,7 @@ namespace Microsoft.Dexterity.Bridge.Extended
     public class ScriptExtended
     {
         public event EventHandler<ScriptEventArgs> AfterInvoke { add => EventDescriptions.AfterInvoke.Subscribe(value); remove => EventDescriptions.AfterInvoke.Unsubscribe(value); }
-        public event EventHandler<ScriptEventArgs> BeforeInvoke { add => EventDescriptions.AfterInvoke.Subscribe(value); remove => EventDescriptions.AfterInvoke.Unsubscribe(value); }
+        public event EventHandler<ScriptEventArgs> BeforeInvoke { add => EventDescriptions.BeforeInvoke.Subscribe(value); remove => EventDescriptions.BeforeInvoke.Unsubscribe(value); }
 
         public Script Script { get; }
 
